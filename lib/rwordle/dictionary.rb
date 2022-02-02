@@ -10,10 +10,10 @@ module Rwordle
       @target ||= word_list.sample
     end
 
-    # TODO: compare the word with its sanitized version
+    # TODO: Check if the word exists in the dictionary. Sanitize dictionary before
     def valid_word?(word)
       word.length == target.length
-      # word_list.include?(word)
+      # && word_list.include?(word)
     end
 
     def word_list

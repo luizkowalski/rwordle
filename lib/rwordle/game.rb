@@ -31,14 +31,14 @@ module Rwordle
 
       show_guesses
 
-      puts("The word was #{dictionary.target.upcase.blue}") # For testing/debugging purposes)
+      puts("The word was #{dictionary.target.upcase.blue}")
     end
 
     private
 
     def show_guesses
       guesses.each do |guess|
-        puts(formatter.print(guess.distribution))
+        formatter.print(guess.distribution)
       end
     end
 

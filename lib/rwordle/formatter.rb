@@ -11,9 +11,11 @@ module Rwordle
     }.freeze
 
     def print(distribution)
-      distribution.map do |_, (letter, position)|
+      formatted = distribution.map do |_, (letter, position)|
         print_letter(letter, position)
       end.join(' ')
+
+      puts(formatted)
     end
 
     private
