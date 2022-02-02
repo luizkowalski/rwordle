@@ -1,50 +1,47 @@
 # frozen_string_literal: true
 
-class Game
-  def initialize
-    word_of_the_day
-    @guesses = []
-  end
+module Rwordle
+  class Game
+    def initialize(dictionary = Rwordle::Dictionary.new, formatter = Rwordle::Formatter.new)
+      @dictionary = dictionary
+      @formatter  = formatter
+      @guesses    = []
+    end
 
-  def play
-    puts target.chars.map { '_' }.join(' ')
+    def play
+      puts(dictionary.word_of_the_day.chars.map { '_' }.join(' '))
 
-    1.upto(6) do |turn|
-      puts "Turn #{turn}: ".red
-      guesses.each { |guess| puts guess }
-      guess_string = gets.chomp.downcase.sanitize
-      system('cls') || system('clear')
+      1.upto(6) do |turn|
+        puts("Turn #{turn}: ".red)
+        show_guesses
+        word = gets.chomp.downcase.sanitize
+        system('cls') || system('clear')
 
-      guess = Guess.new(sanitized_target, guess_string)
+        guess = Rwordle::Guess.new(dictionary, word)
 
-      unless guess.valid?
-        puts 'Invalid guess. Try again.'
-        redo
+        unless guess.valid?
+          puts('Invalid guess. Try again.')
+          redo
+        end
+
+        guesses << guess
+
+        break puts('You won!') if guess.correct?
       end
 
-      guesses << guess
+      show_guesses
 
-      if guesses.last.correct?
-        puts 'You won!'
-        break
+      puts("The word was #{dictionary.target.upcase.blue}") # For testing/debugging purposes)
+    end
+
+    private
+
+    def show_guesses
+      guesses.each do |guess|
+        puts(formatter.print(guess.distribution))
       end
     end
 
-    guesses.each { |guess| puts guess }
-
-    puts "The word was #{target.upcase.blue}" # For testing/debugging purposes
+    attr_reader :dictionary, :guesses, :formatter
   end
-
-  def word_of_the_day
-    @target = word_list.sample
-    @sanitized_target = @target.sanitize
-  end
-
-  private
-
-  def word_list
-    @word_list ||= File.readlines('data/top').map(&:chomp)
-  end
-
-  attr_reader :target, :guesses, :sanitized_target
 end
