@@ -26,7 +26,7 @@ module Rwordle
     def find_correct_letters
       word.chars.each.with_index do |letter, index|
         if target_chars[index] == letter
-          result[index] = [letter, :correct]
+          result[index]       = [letter, :correct]
           target_chars[index] = nil
         end
       end
