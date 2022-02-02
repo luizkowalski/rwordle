@@ -2,10 +2,6 @@
 
 module Rwordle
   class Dictionary
-    def initialize
-      word_of_the_day
-    end
-
     def word_of_the_day
       @word_of_the_day ||= target.sanitize
     end
