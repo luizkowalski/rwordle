@@ -16,6 +16,8 @@ module Rwordle
       end.join(' ')
 
       puts(formatted)
+
+      formatted
     end
 
     private
