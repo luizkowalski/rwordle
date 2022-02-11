@@ -9,19 +9,13 @@ module Rwordle
     }.freeze
 
     def print(distribution)
-      formatted = distribution.map do |_, (letter, position)|
-        print_letter(letter, position)
+      formatted = distribution.map do |dist|
+        dist.letter.capitalize.public_send(POSITION_MATRIX_COLORS[dist.position])
       end.join(' ')
 
       puts(formatted)
 
       formatted
-    end
-
-    private
-
-    def print_letter(letter, position)
-      letter.capitalize.public_send(POSITION_MATRIX_COLORS[position])
     end
   end
 end

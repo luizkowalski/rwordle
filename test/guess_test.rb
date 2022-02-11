@@ -28,14 +28,24 @@ class GuessTest < Minitest::Test
 
   def test_when_guess_is_correct
     subject = Rwordle::Guess.new(@dictionary, 'test')
-    expectation = { 0 => ['t', :correct], 1 => ['e', :correct], 2 => ['s', :correct], 3 => ['t', :correct] }
+    expectation = [
+      Rwordle::Guess::Distribution.new('t', :correct),
+      Rwordle::Guess::Distribution.new('e', :correct),
+      Rwordle::Guess::Distribution.new('s', :correct),
+      Rwordle::Guess::Distribution.new('t', :correct)
+    ]
 
     assert_equal(expectation, subject.distribution)
   end
 
   def test_when_letters_are_misplaced
     subject = Rwordle::Guess.new(@dictionary, 'tets')
-    expectation = { 0 => ['t', :correct], 1 => ['e', :correct], 2 => ['t', :misplaced], 3 => ['s', :misplaced] }
+    expectation = [
+      Rwordle::Guess::Distribution.new('t', :correct),
+      Rwordle::Guess::Distribution.new('e', :correct),
+      Rwordle::Guess::Distribution.new('t', :misplaced),
+      Rwordle::Guess::Distribution.new('s', :misplaced)
+    ]
 
     assert_equal(expectation, subject.distribution)
   end
@@ -44,8 +54,13 @@ class GuessTest < Minitest::Test
     # Only the first A should be marked as misplaced, since there is only one in `MASTE`
     dictionary = ::FakeDictionary.new('maste')
     subject = Rwordle::Guess.new(dictionary, 'aviao')
-    expectation = { 0 => ['a', :misplaced], 1 => ['v', :inexistent], 2 => ['i', :inexistent], 3 => ['a', :inexistent],
-                    4 => ['o', :inexistent] }
+    expectation = [
+      Rwordle::Guess::Distribution.new('a', :misplaced),
+      Rwordle::Guess::Distribution.new('v', :inexistent),
+      Rwordle::Guess::Distribution.new('i', :inexistent),
+      Rwordle::Guess::Distribution.new('a', :inexistent),
+      Rwordle::Guess::Distribution.new('o', :inexistent)
+    ]
 
     assert_equal(expectation, subject.distribution)
   end

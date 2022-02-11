@@ -10,7 +10,7 @@ module Rwordle
 
     def play
       puts(dictionary.word_of_the_day.chars.map { '_' }.join(' '))
-
+      won = false
       1.upto(6) do |turn|
         puts("Turn #{turn}: ".red)
         show_guesses
@@ -26,12 +26,15 @@ module Rwordle
 
         guesses << guess
 
-        break puts('You won!') if guess.correct?
+        if guess.correct?
+          won = true
+          break puts('You won!')
+        end
       end
 
       show_guesses
 
-      puts("The word was #{dictionary.target.upcase.blue}")
+      puts("The word was #{dictionary.target.upcase.blue}") unless won
     end
 
     private

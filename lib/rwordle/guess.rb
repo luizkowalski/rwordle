@@ -2,10 +2,12 @@
 
 module Rwordle
   class Guess
+    Distribution = Struct.new(:letter, :position)
+
     def initialize(dictionary, word)
-      @dictionary = dictionary
-      @word       = word
-      @result     = {}
+      @dictionary   = dictionary
+      @word         = word
+      @distribution = []
       find_correct_letters && find_misplaced_letters
     end
 
@@ -17,16 +19,14 @@ module Rwordle
       dictionary.valid_word?(word)
     end
 
-    def distribution
-      result.sort.to_h
-    end
+    attr_reader :distribution
 
     private
 
     def find_correct_letters
       word.chars.each.with_index do |letter, index|
         if target_chars[index] == letter
-          result[index]       = [letter, :correct]
+          distribution[index] = Distribution.new(letter, :correct)
           target_chars[index] = nil
         end
       end
@@ -34,14 +34,14 @@ module Rwordle
 
     def find_misplaced_letters
       word.chars.each.with_index do |letter, index|
-        next unless result[index].nil?
+        next unless distribution[index].nil?
 
-        result[index] = if target_chars.include?(letter)
-                          target_chars[target_chars.index(letter)] = nil
-                          [letter, :misplaced]
-                        else
-                          [letter, :inexistent]
-                        end
+        distribution[index] = if target_chars.include?(letter)
+                                target_chars[target_chars.index(letter)] = nil
+                                Distribution.new(letter, :misplaced)
+                              else
+                                Distribution.new(letter, :inexistent)
+                              end
       end
     end
 
@@ -49,6 +49,6 @@ module Rwordle
       @target_chars ||= dictionary.word_of_the_day.chars
     end
 
-    attr_reader :dictionary, :word, :result
+    attr_reader :dictionary, :word
   end
 end
