@@ -11,19 +11,19 @@ class GuessTest < Minitest::Test
   def test_when_guess_is_right
     guess = 'test'
 
-    assert(Rwordle::Guess.new(@dictionary, guess).correct?)
+    assert_predicate(Rwordle::Guess.new(@dictionary, guess), :correct?)
   end
 
   def test_when_guess_is_wrong
     guess = 'teste'
 
-    refute(Rwordle::Guess.new(@dictionary, guess).correct?)
+    refute_predicate(Rwordle::Guess.new(@dictionary, guess), :correct?)
   end
 
   def test_when_guess_is_invalid
     guess = 'teste'
 
-    refute(Rwordle::Guess.new(@dictionary, guess).valid?)
+    refute_predicate(Rwordle::Guess.new(@dictionary, guess), :valid?)
   end
 
   def test_when_guess_is_correct
