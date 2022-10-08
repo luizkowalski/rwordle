@@ -25,8 +25,8 @@ Layout/LineLength:
 
 Metrics/MethodLength:
   Enabled: true
-  IgnoredMethods: [play]
+  AllowedMethods: [play]
 
 Metrics/AbcSize:
-  IgnoredMethods: [play]
+  AllowedMethods: [play]
   Max: 20
